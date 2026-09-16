@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍊橙子倒计时</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", sans-serif;
+        }
+        body {
+            background-color: #fff3e6;
+            padding: 60px 20px;
+        }
+        .card {
+            max-width: 540px;
+            margin: 0 auto;
+            background: #fffaf0;
+            padding: 40px 30px;
+            border-radius: 28px;
+            box-shadow: 0 6px 16px #ffbc7070;
+        }
+        h1 {
+            text-align: center;
+            color: #f27c22;
+            font-size: 30px;
+            margin-bottom: 30px;
+        }
+        .fruit-top{
+            text-align:center;
+            font-size:40px;
+            margin-bottom:20px;
+        }
+        .time-box{
+            display:flex;
+            justify-content: center;
+            gap:16px;
+            margin:30px 0;
+        }
+        .time-item{
+            background:#ff9b40;
+            color:white;
+            padding:20px 12px;
+            border-radius:18px;
+            text-align:center;
+            min-width:80px;
+        }
+        .num{
+            font-size:32px;
+            font-weight:bold;
+        }
+        .label{
+            font-size:14px;
+            margin-top:6px;
+        }
+        .input-area{
+            text-align:center;
+            margin:20px 0;
+        }
+        #target-time{
+            padding:10px 14px;
+            border:2px solid #ffb060;
+            border-radius:12px;
+            font-size:16px;
+            outline:none;
+        }
+        #start-btn{
+            margin-left:10px;
+            padding:10px 20px;
+            background:#f27c22;
+            color:white;
+            border:none;
+            border-radius:12px;
+            font-size:16px;
+            cursor:pointer;
+        }
+        #start-btn:hover{
+            background:#e06e18;
+        }
+        .tip{
+            text-align:center;
+            margin-top:24px;
+            color:#cc7020;
+            font-size:14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="fruit-top">🍊 🍑 🥭 🍊</div>
+        <h1>夏日倒计时</h1>
+        <div class="input-area">
+            <input type="datetime-local" id="target-time">
+            <button id="start-btn">开始倒计时</button>
+        </div>
+        <div class="time-box">
+            <div class="time-item">
+                <div class="num" id="day">00</div>
+                <div class="label">天</div>
+            </div>
+            <div class="time-item">
+                <div class="num" id="hour">00</div>
+                <div class="label">时</div>
+            </div>
+            <div class="time-item">
+                <div class="num" id="min">00</div>
+                <div class="label">分</div>
+            </div>
+            <div class="time-item">
+                <div class="time-item">
+                <div class="num" id="sec">00</div>
+                <div class="label">秒</div>
+            </div>
+        </div>
+        <p class="tip">🍊夏日时光，不要辜负美好假期✨</p >
+    </div>
+
+    <script>
+        const dayDom = document.getElementById("day");
+        const hourDom = document.getElementById("hour");
+        const minDom = document.getElementById("min");
+        const secDom = document.getElementById("sec");
+        const timeInput = document.getElementById("target-time");
+        const startBtn = document.getElementById("start-btn");
+        let timer;
+
+        startBtn.onclick = function () {
+            if(timer) clearInterval(timer);
+            const target = new Date(timeInput.value).getTime();
+            if(isNaN(target)){
+                alert("请先选择目标时间！");
+                return;
+            }
+            timer = setInterval(()=>{
+                const now = Date.now();
+                const diff = target - now;
+                if(diff <= 0){
+                    clearInterval(timer);
+                    dayDom.innerText = "00";
+                    hourDom.innerText = "00";
+                    minDom.innerText = "00";
+                    secDom.innerText = "00";
+                    alert("🎉时间到啦！");
+                    return;
+                }
+                const day = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hour = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const min = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const sec = Math.floor((diff % (1000 * 60)) / 1000);
+                dayDom.innerText = String(day).padStart(2,"0");
+                hourDom.innerText = String(hour).padStart(2,"0");
+                minDom.innerText = String(min).padStart(2,"0");
+                secDom.innerText = String(sec).padStart(2,"0");
+            }, 1000)
+        }
+    </script>
+</body>
+</html>
